@@ -141,6 +141,7 @@ print(user_postcode) # Print to check if spaces are removed
 print(type(user_postcode)) # Checking the type. The type is a str
 
 obj = Postcode(user_postcode) # Creating an obj of the class
-print(obj.postcode) # checking to see if def __init__ works
+
+print(obj.postcode)
 print(obj.status_code)
 ```
