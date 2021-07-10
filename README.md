@@ -6,8 +6,11 @@
 ```
  import requests
 
- check_response_postcode = requests.get("https://api.postcodes.io/postcodes/wc1h8jz")
- print(check_response_postcode.status_code)   # To check the status
+check_response_postcode = requests.get("https://api.postcodes.io/postcodes/wc1h8jz")
+print(check_response_postcode) # Returns `<Response [200]>`
+print(check_response_postcode.status_code)   # To check the status, returns 200
+print(check_response_postcode.json()) # json() converts the data into dict.
+
 
 
  if check_response_postcode.status_code == 200:
@@ -116,32 +119,35 @@ user_postcode = input("What is your postcode?: ").replace(" ","")
 ```
 
 
--  Attempting to put everything in a class
+-  Put everything in a class and "coolify" the code
 ```
+
 import requests
 
 class Postcode:
     def __init__(self,postcode):
         self.postcode = postcode
-        self.status_code = requests.get(f"https://api.postcodes.io/postcodes/{self.postcode}").status_code
+        self.area_information = requests.get(f"https://api.postcodes.io/postcodes/{self.postcode}")
 
-
-        if self.status_code == 200:
-            print(f"Success: {self.status_code}")
+        if (self.area_information).status_code == 200:
+            print(f"Success: {(self.area_information).status_code}") # Extracting status code
+            response_dict= (self.area_information).json() # Turning info into dict
+            result_dict = response_dict['result']  # Opening results dict
+            print(f"Your location is {result_dict['admin_ward']}")
         else:
-            print(f"Unavailable{self.status_code}")
+            print(f"Unavailable: {(self.area_information).status_code}")
 
 
 
 # Prompt user for postcode and get rid of any spaces
-user_postcode = input("What is your postcode?: ").replace(" ","")
+user_postcode = input("What is your postcode?: ").replace(" ","") # Get rid of any spaces with `replace(" ","")`
 
 
-print(user_postcode) # Print to check if spaces are removed
-print(type(user_postcode)) # Checking the type. The type is a str
+print(f"The postcode you entered is {user_postcode}") # Relay user input back to user, display postcode
+
 
 obj = Postcode(user_postcode) # Creating an obj of the class
 
-print(obj.postcode)
-print(obj.status_code)
-```
+
+
+
